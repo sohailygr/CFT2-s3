@@ -17,8 +17,11 @@ pipeline {
     stage('Upload Objects') {
             steps {
                 script {
+                   withCredentials([string(credentialsId: 'aamir-awscli-ygrusr2', variable: 'AWS_ACCESS_KEY_ID'),
+                                 string(credentialsId: 'secretkey-awscli-ygrusr2', variable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh "aws s3 cp ./hello.jpg s3://ygrusrg31a238/"
                     sh "aws s3 cp ./test.html s3://ygrusrg31a238/"
+                  }
                 }
             }
         }
