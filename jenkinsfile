@@ -1,1 +1,25 @@
-
+pipeline {
+    agent any
+ 
+    stages {
+        stage('Deploy S3 Bucket with awscli') {
+            steps {
+                script {
+                      withCredentials([string(credentialsId: 'aamir-awscli-ygrusr2', variable: 'AWS_ACCESS_KEY_ID'),
+                                 string(credentialsId: 'secretkey-awscli-ygrusr2', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                      
+                       sh "aws cloudformation create-stack --stack-name aamirygrusr4-s3-bucket-stack --template-body file://s3-bucket-template.yaml --region 'ap-south-1'"
+                }
+            }
+        }
+    }
+  }
+    stage('Upload Objects') {
+            steps {
+                script {
+                    sh "aws s3 cp ./hello.jpg s3://ygrusrg31a238/"
+                    sh "aws s3 cp ./test.html s3://ygrusrg31a238/"
+                }
+            }
+        }
+    }
